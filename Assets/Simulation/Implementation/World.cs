@@ -21,16 +21,16 @@ namespace Simulation.Implementation
 
         public World()
         {
-            Height = 1000;
-            Width = 750;
+            Height = 750;
+            Width = 1000;
 
             Players = new List<Player>();
 
 
-            var blueSelfControl = new SelfControl(PlayerType.Blue)
+            var blueSelfControl = new SelfControl
             {
-                X = 50,
-                Y = 50
+                PlayerType = PlayerType.Blue,
+                Position = new Vector2(500, 750)
             };
 
             var bluePlayer = new GoToCenter(this, blueSelfControl);
@@ -41,13 +41,13 @@ namespace Simulation.Implementation
         {
             Players.Select(p => p.SelfControl as SelfControl)
                 .ToList()
-                .ForEach(s => s.InitTurn());
+                .ForEach(s => s.ResetActions());
 
             Players.ForEach(s => s.Move());
 
             Players.Select(p => p.SelfControl as SelfControl)
                 .ToList()
-                .ForEach(s => s.ProcessTurn());
+                .ForEach(s => s.ProcessActions());
         }
     }
 }

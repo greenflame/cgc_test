@@ -15,7 +15,15 @@ namespace Simulation.Strategies
 
         public override void Move()
         {
-            //SelfControl.TurnTo(World.Height / 2, World.Width / 2);
+            if (SelfControl.DistanceTo(World.Width / 2, World.Height / 2) > 200)
+            {
+                SelfControl.TurnTo(World.Width / 2, World.Height / 2);
+            }
+            else
+            {
+                SelfControl.TurnTo(0, 0);
+            }
+
             SelfControl.StepForward();
         }
     }

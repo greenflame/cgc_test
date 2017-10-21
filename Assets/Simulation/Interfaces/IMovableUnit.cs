@@ -2,6 +2,11 @@
 {
     public interface IMovableUnit : IUnit
     {
-        float Speed { get; }
+        float LeftSpeed { get; }
+        float RightSpeed { get; }
+        float ForwardSpeed { get; }
+        float BackSpeed { get; }
+
+        float RotationSpeed { get; }
     }
 }
