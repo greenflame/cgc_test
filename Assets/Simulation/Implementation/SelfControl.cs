@@ -86,13 +86,13 @@ namespace Simulation.Implementation
                     Position += Vector2.FromAngle(Angle) * ForwardSpeed;
                     break;
                 case MotionType.Back:
-                    Position += Vector2.FromAngle(Angle) * BackSpeed;
+                    Position += Vector2.FromAngle(Angle + (float)Math.PI) * BackSpeed;
                     break;
                 case MotionType.Left:
-                    Position += Vector2.FromAngle(Angle) * LeftSpeed;
+                    Position += Vector2.FromAngle(Angle - (float)Math.PI / 2) * LeftSpeed;
                     break;
                 case MotionType.Right:
-                    Position += Vector2.FromAngle(Angle) * RightSpeed;
+                    Position += Vector2.FromAngle(Angle + (float)Math.PI / 2) * RightSpeed;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
