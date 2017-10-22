@@ -3,12 +3,10 @@ using Simulation.Interfaces.Enums;
 
 namespace Simulation.Interfaces
 {
-    public interface IEnemy : IMovableUnit
+    public interface IPlayer : IMovableUnit
     {
         string Name { get; }
         PlayerType PlayerType { get; }
-
-        IList<IEffect> Effects { get; }
-        bool HasEffectOfType(IEffect effectType);
+        int Score { get; }
     }
 }

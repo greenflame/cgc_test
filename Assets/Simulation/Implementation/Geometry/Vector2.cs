@@ -1,14 +1,12 @@
-﻿using System;
-using Simulation.Interfaces;
+﻿using Simulation.Interfaces;
+using System;
 
-namespace Simulation.Implementation
+namespace Simulation.Implementation.Geometry
 {
     public class Vector2
     {
         public float X { get; set; }
         public float Y { get; set; }
-
-        public static float Epsilon { get { return 1e-5f; } }
 
         public float Length
         {
@@ -44,7 +42,7 @@ namespace Simulation.Implementation
 
         protected bool Equals(Vector2 other)
         {
-            return Math.Abs(X - other.X) < Epsilon && Math.Abs(Y - other.Y) < Epsilon;
+            return Math.Abs(X - other.X) < Tools.Epsilon && Math.Abs(Y - other.Y) < Tools.Epsilon;
         }
 
         public override int GetHashCode()

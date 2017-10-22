@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Simulation.Implementation.Geometry;
 using Simulation.Interfaces;
 using Simulation.Interfaces.Enums;
 using Simulation.Strategies;
@@ -8,11 +9,11 @@ namespace Simulation.Implementation
 {
     public class World : IWorld
     {
-        public List<Player> Players { get; private set; }
+        public List<Strategy> Players { get; private set; }
 
         public IList<IBonus> Bonuses { get; private set; }
         public IList<IObstacle> Obstacles { get; private set; }
-        public IList<IEnemy> Enemies { get; private set; }
+        public IList<IPlayer> Enemies { get; private set; }
         public IList<IShell> Shells { get; private set; }
 
         public float Height { get; private set; }
@@ -24,7 +25,7 @@ namespace Simulation.Implementation
             Height = 750;
             Width = 1000;
 
-            Players = new List<Player>();
+            Players = new List<Strategy>();
 
 
             var blueSelfControl = new SelfControl

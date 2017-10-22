@@ -6,7 +6,7 @@ namespace Simulation.Interfaces
     {
         IList<IBonus> Bonuses { get; }
         IList<IObstacle> Obstacles { get; }
-        IList<IEnemy> Enemies { get; }
+        IList<IPlayer> Enemies { get; }
         IList<IShell> Shells { get; }
 
         float Height { get; }

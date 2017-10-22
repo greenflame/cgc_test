@@ -1,8 +1,9 @@
-﻿using Simulation.Interfaces;
+﻿using System;
+using Simulation.Interfaces;
 
 namespace Simulation.Strategies
 {
-    public class GoToCenter : Player
+    public class GoToCenter : Strategy
     {
         public GoToCenter(IWorld world, ISelfControl selfControl) : base(world, selfControl)
         {
@@ -24,7 +25,14 @@ namespace Simulation.Strategies
                 SelfControl.TurnTo(0, 0);
             }
 
-            SelfControl.StepForward();
+            //if (new Random().Next(1) == 0)
+            //{
+            //    SelfControl.StepForward();
+            //}
+            //else
+            {
+                SelfControl.StepRight();
+            }
         }
     }
 }

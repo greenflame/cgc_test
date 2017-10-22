@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using Simulation.Implementation;
+using Simulation.Implementation.Geometry;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Assertions.Comparers;
-using Vector2 = Simulation.Implementation.Vector2;
+using Vector2 = Simulation.Implementation.Geometry.Vector2;
 
 namespace Visualisation
 {
@@ -31,7 +32,6 @@ namespace Visualisation
         private void Update()
         {
             _world.DoStep();
-            Debug.Log(_world.Players[0].SelfControl.Angle);
             Draw();
         }
 
@@ -68,14 +68,14 @@ namespace Visualisation
             var d2 = Vector2.FromAngle(Mathf.PI * 3 / 2);
             Assert.AreEqual(d, d2);
 
-            Assert.AreEqual(r.AngleTo(u), Mathf.PI / 2, "", new FloatComparer(Vector2.Epsilon));
-            Assert.AreEqual(u.AngleTo(l), Mathf.PI / 2, "", new FloatComparer(Vector2.Epsilon));
-            Assert.AreEqual(l.AngleTo(d), Mathf.PI / 2, "", new FloatComparer(Vector2.Epsilon));
-            Assert.AreEqual(d.AngleTo(r), Mathf.PI / 2, "", new FloatComparer(Vector2.Epsilon));
+            Assert.AreEqual(r.AngleTo(u), Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
+            Assert.AreEqual(u.AngleTo(l), Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
+            Assert.AreEqual(l.AngleTo(d), Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
+            Assert.AreEqual(d.AngleTo(r), Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
 
-            Assert.AreEqual(l.AngleTo(u), -Mathf.PI / 2, "", new FloatComparer(Vector2.Epsilon));
+            Assert.AreEqual(l.AngleTo(u), -Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
 
-            Assert.AreEqual(l.AngleTo(r), Mathf.PI, "", new FloatComparer(Vector2.Epsilon));
+            Assert.AreEqual(l.AngleTo(r), Mathf.PI, "", new FloatComparer(Tools.Epsilon));
         }
     }
 }

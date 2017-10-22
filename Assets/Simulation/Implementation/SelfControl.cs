@@ -2,28 +2,15 @@
 using System.Collections.Generic;
 using System.Security.Policy;
 using Assets.Simulation.Implementation;
+using Simulation.Implementation.Geometry;
 using Simulation.Interfaces;
 using Simulation.Interfaces.Enums;
 
 namespace Simulation.Implementation
 {
-    public class SelfControl : ISelfControl
+    public class SelfControl : MovableUnit, ISelfControl
     {
-        // Unit
-        public float Angle { get; set; }
-        public float Radius { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-
-        // Movable Unit
-        public float LeftSpeed { get; set; }
-        public float RightSpeed { get; set; }
-        public float ForwardSpeed { get; set; }
-        public float BackSpeed { get; set; }
-
-        public float RotationSpeed { get; set; }
-
-        // Enemy
+        // Player
         public string Name { get; set; }
         public PlayerType PlayerType { get; set; }
         public IList<IEffect> Effects { get; set; }
@@ -32,21 +19,6 @@ namespace Simulation.Implementation
         public int Score { get; set; }
 
         // Internal
-        public Vector2 Position
-        {
-            get { return new Vector2(X, Y); }
-            set
-            {
-                X = value.X;
-                Y = value.Y;
-            }
-        }
-
-        public Vector2 Forward
-        {
-            get { return Vector2.FromAngle(Angle); }
-        }
-
         public MotionType MotionAction { get; set; }
         public float RotationAction { get; set; }
 
@@ -73,7 +45,7 @@ namespace Simulation.Implementation
         public void ProcessActions()
         {
             MoveInternal();
-            TurnInternal();
+            RotateConsiderSpeed(RotationAction);
         }
 
         public void MoveInternal()
@@ -83,64 +55,20 @@ namespace Simulation.Implementation
                 case MotionType.Idle:
                     break;
                 case MotionType.Forvard:
-                    Position += Vector2.FromAngle(Angle) * ForwardSpeed;
+                    (this as MovableUnit).StepForward();
                     break;
                 case MotionType.Back:
-                    Position += Vector2.FromAngle(Angle + (float)Math.PI) * BackSpeed;
+                    (this as MovableUnit).StepBack();
                     break;
                 case MotionType.Left:
-                    Position += Vector2.FromAngle(Angle - (float)Math.PI / 2) * LeftSpeed;
+                    (this as MovableUnit).StepLeft();
                     break;
                 case MotionType.Right:
-                    Position += Vector2.FromAngle(Angle + (float)Math.PI / 2) * RightSpeed;
+                    (this as MovableUnit).StepForward();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        public void TurnInternal()
-        {
-            RotationAction = Math.Min(RotationAction, RotationSpeed);
-            RotationAction = Math.Max(RotationAction, -RotationSpeed);
-
-            Angle += RotationAction;
-            NormalizeAngle();
-        }
-
-        public void NormalizeAngle()
-        {
-            const float twoPi = (float)Math.PI * 2;
-
-            while (Angle <= -Math.PI)
-            {
-                Angle += twoPi;
-            }
-
-            while (Angle > Math.PI)
-            {
-                Angle -= twoPi;
-            }
-        }
-
-        public float AngleTo(float x, float y)
-        {
-            return Forward.AngleTo(new Vector2(x, y) - Position);
-        }
-
-        public float AngleTo(IUnit obj)
-        {
-            return AngleTo(obj.X, obj.Y);
-        }
-
-        public float DistanceTo(float x, float y)
-        {
-            return Position.DistanceTo(new Vector2(x, y));
-        }
-
-        public float DistanceTo(IUnit obj)
-        {
-            return Position.DistanceTo(Vector2.FromUnit(obj));
         }
 
         public bool HasEffectOfType(IEffect effectType)
@@ -155,25 +83,25 @@ namespace Simulation.Implementation
 
         public void Shot()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void StepBack()
+        public new void StepBack()
         {
             MotionAction = MotionType.Back;
         }
 
-        public void StepForward()
+        public new void StepForward()
         {
             MotionAction = MotionType.Forvard;
         }
 
-        public void StepLeft()
+        public new void StepLeft()
         {
             MotionAction = MotionType.Left;
         }
 
-        public void StepRight()
+        public new void StepRight()
         {
             MotionAction = MotionType.Right;
         }

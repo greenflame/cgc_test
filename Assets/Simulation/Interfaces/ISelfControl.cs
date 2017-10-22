@@ -1,9 +1,7 @@
 ﻿namespace Simulation.Interfaces
 {
-    public interface ISelfControl : IEnemy
+    public interface ISelfControl : IPlayer
     {
-        int Score { get; }
-
         void SetName(string name);
 
         void Shot();
