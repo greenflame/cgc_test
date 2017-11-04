@@ -16,14 +16,14 @@ namespace Simulation.Strategies
 
         public override void Move()
         {
-            if (SelfControl.DistanceTo(World.Width / 2, World.Height / 2) > 200)
-            {
-                SelfControl.TurnTo(World.Width / 2, World.Height / 2);
-            }
-            else
-            {
-                SelfControl.TurnTo(0, 0);
-            }
+            //if (SelfControl.DistanceTo(World.Width / 2, World.Height / 2) > 200)
+            //{
+            //    SelfControl.TurnTo(World.Width / 2, World.Height / 2);
+            //}
+            //else
+            //{
+            //    SelfControl.TurnTo(0, 0);
+            //}
 
             //if (new Random().Next(1) == 0)
             //{

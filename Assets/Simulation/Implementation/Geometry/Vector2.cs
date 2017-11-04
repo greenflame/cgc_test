@@ -18,6 +18,11 @@ namespace Simulation.Implementation.Geometry
             get { return this / Length; }
         }
 
+        public float Angle
+        {
+            get { return new Vector2(1, 0).AngleTo(this); }
+        }
+
         public Vector2()
         {
             X = 0;
@@ -28,29 +33,6 @@ namespace Simulation.Implementation.Geometry
         {
             X = x;
             Y = y;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is Vector2))
-            {
-                return false;
-            }
-
-            return Equals((Vector2) obj);
-        }
-
-        protected bool Equals(Vector2 other)
-        {
-            return Math.Abs(X - other.X) < Tools.Epsilon && Math.Abs(Y - other.Y) < Tools.Epsilon;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
-            }
         }
 
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
@@ -70,7 +52,7 @@ namespace Simulation.Implementation.Geometry
 
         public static Vector2 operator /(Vector2 v, float a)
         {
-            return v * (1f / a);
+            return new Vector2(v.X / a, v.Y / a);
         }
 
         public float Dot(Vector2 other)
@@ -83,9 +65,17 @@ namespace Simulation.Implementation.Geometry
             return X * other.Y - Y * other.X;
         }
 
+        public Vector2 Rotate(float angle)
+        {
+            float cs = (float) Math.Cos(angle);
+            float sn = (float) Math.Sin(angle);
+
+            return new Vector2(X * cs - Y * sn, X * sn + Y * cs);
+        }
+
         public static Vector2 FromAngle(float angle)
         {
-            return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+            return new Vector2(1, 0).Rotate(angle);
         }
 
         public float AngleTo(Vector2 other)
@@ -93,7 +83,7 @@ namespace Simulation.Implementation.Geometry
             var dot = other.Normalized.Dot(Normalized);
             var cross = Cross(other);
 
-            var angle = (float)Math.Acos(Math.Min(1, dot));
+            var angle = (float)Math.Acos(Tools.FitRange(dot, -1, 1));
 
             if (Math.Abs(cross) > float.Epsilon)
             {
@@ -102,20 +92,44 @@ namespace Simulation.Implementation.Geometry
 
             return angle;
         }
-
-        public static Vector2 FromUnit(IUnit unit)
-        {
-            return new Vector2(unit.X, unit.Y);
-        }
-
+        
         public float DistanceTo(Vector2 other)
         {
             return (this - other).Length;
+        }
+
+        public static Vector2 Random(Random r, Vector2 max)
+        {
+            return new Vector2((float) (r.NextDouble() * max.X), (float) (r.NextDouble() * max.Y));
         }
 
         public override string ToString()
         {
             return string.Format("[{0}, {1}]", X, Y);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Vector2))
+            {
+                return false;
+            }
+
+            return Equals((Vector2)obj);
+        }
+
+        protected bool Equals(Vector2 other)
+        {
+            return Math.Abs(X - other.X) < Tools.Epsilon && Math.Abs(Y - other.Y) < Tools.Epsilon;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+            }
+        }
+
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using Simulation.Implementation;
+using Simulation.Implementation.Factories;
 using Simulation.Implementation.Geometry;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Assertions.Comparers;
+using GameObject = UnityEngine.GameObject;
 using Vector2 = Simulation.Implementation.Geometry.Vector2;
+using Transform = Simulation.Implementation.Components.Transform;
 
 namespace Visualisation
 {
@@ -22,6 +25,8 @@ namespace Visualisation
         {
             _world = new World();
 
+            _world.GameObjects.Add(Factory.MakeQuickMonster(_world));
+
             _players = new List<GameObject>();
             _players.Add(GameObject.CreatePrimitive(PrimitiveType.Sphere));
 
@@ -37,10 +42,10 @@ namespace Visualisation
 
         private void Draw()
         {
-            foreach (var player in _world.Players)
+            foreach (var player in _world.GameObjects)
             {
-                float x = W / _world.Width * player.SelfControl.X;
-                float y = H / _world.Height * player.SelfControl.Y;
+                float x = W / _world.Size.X * player.GetComponent<Transform>().Position.X;
+                float y = H / _world.Size.Y * player.GetComponent<Transform>().Position.Y;
 
                 _players[0].transform.position = new Vector3(x, y, 0);
             }
@@ -56,6 +61,7 @@ namespace Visualisation
             //
             var u = new Vector2(0, 1);
             var u2 = Vector2.FromAngle(Mathf.PI / 2);
+            Assert.AreEqual(u, u2);
             Assert.AreEqual(u, u2);
 
             //
@@ -76,6 +82,8 @@ namespace Visualisation
             Assert.AreEqual(l.AngleTo(u), -Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
 
             Assert.AreEqual(l.AngleTo(r), Mathf.PI, "", new FloatComparer(Tools.Epsilon));
+
+            Debug.Log("Tests completed");
         }
     }
 }
