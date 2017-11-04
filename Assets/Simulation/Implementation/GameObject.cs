@@ -1,40 +1,34 @@
 ﻿using Simulation.Implementation.Components;
 using System.Collections.Generic;
 using System.Linq;
-using Simulation.Implementation.Components.Exceptions;
+using Simulation.Implementation.Exceptions;
 
 namespace Simulation.Implementation
 {
-    public class GameObject
+    public sealed class GameObject
     {
         public World World { get; set; }
 
+        public string Name { get; set; }
+
         public List<Component> Components { get; set; }
 
-        public GameObject(World world)
+        public GameObject(World world, string name)
         {
             World = world;
+            Name = name;
+
             Components = new List<Component>();
         }
 
-        public void Initialize()
-        {
-            Components.ForEach(c => c.Initialize(this));
-        }
-
-        public void DoStep()
-        {
-            Components.ForEach(c => c.DoStep());
-        }
-
-        public T GetComponent<T>()
+        public T GetComponentSafe<T>()
         {
             return Components.OfType<T>().FirstOrDefault();
         }
 
-        public T GetComponentUnsafe<T>()
+        public T GetComponent<T>()
         {
-            T component = GetComponent<T>();
+            T component = GetComponentSafe<T>();
 
             if (component == null)
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using Simulation.Implementation.Components.Exceptions;
 using Simulation.Implementation.Geometry;
 
 namespace Simulation.Implementation.Components
@@ -13,11 +12,9 @@ namespace Simulation.Implementation.Components
 
         private Transform Transform { get; set; }
 
-        public override void Initialize(GameObject gameObject)
+        public override void Initialize()
         {
-            base.Initialize(gameObject);
-
-            Transform = GameObject.GetComponentUnsafe<Transform>();
+            Transform = GameObject.GetComponent<Transform>();
         }
 
         public void StepLeft()

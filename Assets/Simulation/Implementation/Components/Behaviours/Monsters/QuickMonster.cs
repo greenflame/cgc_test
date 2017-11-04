@@ -1,8 +1,9 @@
 ﻿using System;
-using Simulation.Implementation.Components.Exceptions;
+using Simulation.Implementation.Components.Guns;
+using Simulation.Implementation.Components.Services;
 using Simulation.Implementation.Geometry;
 
-namespace Simulation.Implementation.Components.Behaviours
+namespace Simulation.Implementation.Components.Behaviours.Monsters
 {
     public class QuickMonster : MonsterBehaviour
     {
@@ -19,14 +20,19 @@ namespace Simulation.Implementation.Components.Behaviours
         // Components
         private Transform Transform { get; set; }
         private MotionController MotionController { get; set; }
+        private SimpleGun SimpleGun { get; set; }
 
+        private SizeService SizeService { get; set; }
 
-        public override void Initialize(GameObject gameObject)
+        public override void Initialize()
         {
-            base.Initialize(gameObject);
+            Transform = GameObject.GetComponent<Transform>();
+            MotionController = GameObject.GetComponent<MotionController>();
+            SimpleGun = GameObject.GetComponent<SimpleGun>();
 
-            Transform = GameObject.GetComponentUnsafe<Transform>();
-            MotionController = GameObject.GetComponentUnsafe<MotionController>();
+            SizeService = GameObject.World
+                .GetObject<SizeService>()
+                .GetComponent<SizeService>();
 
             GenerateNewDestination();
         }
@@ -36,6 +42,7 @@ namespace Simulation.Implementation.Components.Behaviours
             if (Transform.DistanceTo(CurrentDestination) < 100)
             {
                 GenerateNewDestination();
+                SimpleGun.Shoot();
             }
 
             MotionController.RotateTo(CurrentDestination);
@@ -44,7 +51,7 @@ namespace Simulation.Implementation.Components.Behaviours
 
         private void GenerateNewDestination()
         {
-            CurrentDestination = Vector2.Random(new Random(), GameObject.World.Size);
+            CurrentDestination = Vector2.Random(new Random(), SizeService.Size);
         }
     }
 }
