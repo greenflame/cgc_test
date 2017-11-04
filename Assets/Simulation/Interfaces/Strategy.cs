@@ -5,7 +5,7 @@
         public IWorld World { get; private set; }
         public ISelfControl SelfControl { get; private set; }
 
-        public Strategy(IWorld world, ISelfControl selfControl)
+        protected Strategy(IWorld world, ISelfControl selfControl)
         {
             World = world;
             SelfControl = selfControl;

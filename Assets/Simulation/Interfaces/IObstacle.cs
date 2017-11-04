@@ -1,7 +1,9 @@
-﻿namespace Simulation.Interfaces
+﻿using Simulation.Interfaces.Modules;
+
+namespace Simulation.Interfaces
 {
-    public interface IObstacle : IUnit
+    public interface IObstacle : IUnitWithHealth
     {
-        int RemainingStrength { get; }
+
     }
 }

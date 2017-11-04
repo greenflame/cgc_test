@@ -13,7 +13,7 @@ namespace Simulation.Implementation
 
         public IList<IBonus> Bonuses { get; private set; }
         public IList<IObstacle> Obstacles { get; private set; }
-        public IList<IPlayer> Enemies { get; private set; }
+        public IList<IPlayer> Players { get; private set; }
         public IList<IShell> Shells { get; private set; }
 
         public float Height { get; private set; }

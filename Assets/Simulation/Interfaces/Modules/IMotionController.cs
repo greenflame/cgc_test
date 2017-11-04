@@ -1,6 +1,6 @@
-﻿namespace Simulation.Interfaces
+﻿namespace Simulation.Interfaces.Modules
 {
-    public interface IMovableUnit : IUnit
+    public interface IMotionController
     {
         float LeftSpeed { get; }
         float RightSpeed { get; }

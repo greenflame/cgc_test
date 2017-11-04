@@ -1,6 +1,8 @@
-﻿namespace Simulation.Interfaces
+﻿using Simulation.Interfaces.Modules;
+
+namespace Simulation.Interfaces
 {
-    public interface IMonster : IMovableUnit, IDestroyableUnit
+    public interface IMonster : IMovableUnit, IUnitWithHealth, IUnitWithWeapon
     {
 
     }
