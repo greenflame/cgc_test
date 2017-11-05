@@ -35,13 +35,13 @@ namespace Simulation.Implementation.Factories
             gameObject.Components.Add(new Transform
             {
                 Position = new Vector2(0, 0),
-                Radius = 1
+                Radius = 30
             });
 
             gameObject.Components.Add(new MotionController
             {
-                RotationSpeed = 0.2f,
-                StraightSpeed = 5,
+                RotationSpeed = 0.1f,
+                StraightSpeed = 1,
                 SideSpeed = 3
             });
 
@@ -68,14 +68,14 @@ namespace Simulation.Implementation.Factories
             gameObject.Components.Add(new Transform
             {
                 Position = new Vector2(0, 0),
-                Radius = 1
+                Radius = 5
             });
 
             gameObject.Components.Add(new MotionController
             {
-                RotationSpeed = 0.2f,
-                StraightSpeed = 5,
-                SideSpeed = 3
+                RotationSpeed = 0,
+                StraightSpeed = 10,
+                SideSpeed = 0
             });
 
             gameObject.Components.Add(new SimpleShell

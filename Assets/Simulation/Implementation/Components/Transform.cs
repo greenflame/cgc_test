@@ -9,8 +9,8 @@ namespace Simulation.Implementation.Components
     public class Transform : Component
     {
         public Vector2 Position { get; set; }
-        public float Angle { get; set; }
-        public float Radius { get; set; }
+        public double Angle { get; set; }
+        public double Radius { get; set; }
 
         public Vector2 Forward
         {
@@ -29,15 +29,15 @@ namespace Simulation.Implementation.Components
 
         public Vector2 Backward
         {
-            get { return Vector2.FromAngle(Angle).Rotate((float) Math.PI); }
+            get { return Vector2.FromAngle(Angle).Rotate(Math.PI); }
         }
 
-        public float DistanceTo(Vector2 target)
+        public double DistanceTo(Vector2 target)
         {
             return Position.DistanceTo(target);
         }
 
-        public float AngleTo(Vector2 target)
+        public double AngleTo(Vector2 target)
         {
             return Forward.AngleTo(target - Position);
         }
@@ -47,7 +47,7 @@ namespace Simulation.Implementation.Components
             Position += vec;
         }
 
-        public void Rotate(float angle)
+        public void Rotate(double angle)
         {
             Angle = Tools.NormalizeAngle(Angle + angle);
         }

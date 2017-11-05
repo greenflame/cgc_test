@@ -9,8 +9,8 @@ namespace Simulation.Interfaces
         IList<IShell> Shells { get; }
         IList<IMonster> Monsters { get; }
 
-        float Height { get; }
-        float Width { get; }
+        double Height { get; }
+        double Width { get; }
 
         int Tick { get; }
     }

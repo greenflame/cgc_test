@@ -2,16 +2,16 @@
 {
     public interface IUnit
     {
-        float Angle { get; }
-        float Radius { get; }
+        double Angle { get; }
+        double Radius { get; }
 
-        float X { get; }
-        float Y { get; }
+        double X { get; }
+        double Y { get; }
 
-        float AngleTo(float x, float y);
-        float AngleTo(IUnit obj);
+        double AngleTo(double x, double y);
+        double AngleTo(IUnit obj);
 
-        float DistanceTo(float x, float y);
-        float DistanceTo(IUnit obj);
+        double DistanceTo(double x, double y);
+        double DistanceTo(IUnit obj);
     }
 }

@@ -4,13 +4,13 @@ namespace Simulation.Implementation.Geometry
 {
     public static class Tools
     {
-        public static float Epsilon { get { return 1e-5f; } }
+        public static double Epsilon { get { return 1e-5f; } }
 
-        public static float HalfPi { get { return (float)Math.PI / 2; } }
+        public static double HalfPi { get { return Math.PI / 2; } }
 
-        public static float TwoPi { get { return (float)Math.PI * 2; } }
+        public static double TwoPi { get { return Math.PI * 2; } }
 
-        public static float NormalizeAngle(float angle)
+        public static double NormalizeAngle(double angle)
         {
             while (angle <= -Math.PI)
             {
@@ -25,7 +25,7 @@ namespace Simulation.Implementation.Geometry
             return angle;
         }
 
-        public static float FitRange(float val, float min, float max)
+        public static double FitRange(double val, double min, double max)
         {
             val = Math.Min(val, max);
             val = Math.Max(val, min);

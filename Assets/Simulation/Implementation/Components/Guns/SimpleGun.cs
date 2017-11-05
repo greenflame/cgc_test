@@ -36,9 +36,16 @@ namespace Simulation.Implementation.Components.Guns
 
             CooldownRemain = Cooldown;
 
+            InstantiateShell();
+        }
+
+        private void InstantiateShell()
+        {
             var shell = Factory.MakeSimpleShell(GameObject.World);
 
-            shell.GetComponent<Transform>().Position = Transform.Position + Transform.Forward * 50;
+            double dist = Transform.Radius + shell.GetComponent<Transform>().Radius + 5;
+            shell.GetComponent<Transform>().Position = Transform.Forward * dist;
+
             shell.GetComponent<Transform>().Angle = Transform.Angle;
 
             GameObject.World.CreateObject(shell);

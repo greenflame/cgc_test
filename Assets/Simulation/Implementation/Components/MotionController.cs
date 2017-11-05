@@ -5,10 +5,10 @@ namespace Simulation.Implementation.Components
 {
     public class MotionController : Component
     {
-        public float StraightSpeed { get; set; }
-        public float SideSpeed { get; set; }
+        public double StraightSpeed { get; set; }
+        public double SideSpeed { get; set; }
 
-        public float RotationSpeed { get; set; }
+        public double RotationSpeed { get; set; }
 
         private Transform Transform { get; set; }
 
@@ -37,7 +37,7 @@ namespace Simulation.Implementation.Components
             Transform.Translate(Transform.Backward * StraightSpeed);
         }
 
-        public void Rotate(float angle)
+        public void Rotate(double angle)
         {
             Transform.Rotate(Tools.FitRange(angle, -RotationSpeed, RotationSpeed));
         }

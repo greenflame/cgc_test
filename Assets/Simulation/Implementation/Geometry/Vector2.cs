@@ -5,12 +5,12 @@ namespace Simulation.Implementation.Geometry
 {
     public class Vector2
     {
-        public float X { get; set; }
-        public float Y { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
 
-        public float Length
+        public double Length
         {
-            get { return (float)Math.Sqrt(Dot(this)); }
+            get { return Math.Sqrt(Dot(this)); }
         }
 
         public Vector2 Normalized
@@ -18,7 +18,7 @@ namespace Simulation.Implementation.Geometry
             get { return this / Length; }
         }
 
-        public float Angle
+        public double Angle
         {
             get { return new Vector2(1, 0).AngleTo(this); }
         }
@@ -29,7 +29,7 @@ namespace Simulation.Implementation.Geometry
             Y = 0;
         }
 
-        public Vector2(float x, float y)
+        public Vector2(double x, double y)
         {
             X = x;
             Y = y;
@@ -45,47 +45,47 @@ namespace Simulation.Implementation.Geometry
             return new Vector2(v1.X - v2.X, v1.Y - v2.Y);
         }
 
-        public static Vector2 operator *(Vector2 v, float a)
+        public static Vector2 operator *(Vector2 v, double a)
         {
             return new Vector2(v.X * a, v.Y * a);
         }
 
-        public static Vector2 operator /(Vector2 v, float a)
+        public static Vector2 operator /(Vector2 v, double a)
         {
             return new Vector2(v.X / a, v.Y / a);
         }
 
-        public float Dot(Vector2 other)
+        public double Dot(Vector2 other)
         {
             return X * other.X + Y * other.Y;
         }
 
-        public float Cross(Vector2 other)
+        public double Cross(Vector2 other)
         {
             return X * other.Y - Y * other.X;
         }
 
-        public Vector2 Rotate(float angle)
+        public Vector2 Rotate(double angle)
         {
-            float cs = (float) Math.Cos(angle);
-            float sn = (float) Math.Sin(angle);
+            double cs = Math.Cos(angle);
+            double sn = Math.Sin(angle);
 
             return new Vector2(X * cs - Y * sn, X * sn + Y * cs);
         }
 
-        public static Vector2 FromAngle(float angle)
+        public static Vector2 FromAngle(double angle)
         {
             return new Vector2(1, 0).Rotate(angle);
         }
 
-        public float AngleTo(Vector2 other)
+        public double AngleTo(Vector2 other)
         {
             var dot = other.Normalized.Dot(Normalized);
             var cross = Cross(other);
 
-            var angle = (float)Math.Acos(Tools.FitRange(dot, -1, 1));
+            var angle = Math.Acos(Tools.FitRange(dot, -1, 1));
 
-            if (Math.Abs(cross) > float.Epsilon)
+            if (Math.Abs(cross) > double.Epsilon)
             {
                 angle *= Math.Sign(cross);
             }
@@ -93,14 +93,14 @@ namespace Simulation.Implementation.Geometry
             return angle;
         }
         
-        public float DistanceTo(Vector2 other)
+        public double DistanceTo(Vector2 other)
         {
             return (this - other).Length;
         }
 
         public static Vector2 Random(Random r, Vector2 max)
         {
-            return new Vector2((float) (r.NextDouble() * max.X), (float) (r.NextDouble() * max.Y));
+            return new Vector2(r.NextDouble() * max.X, r.NextDouble() * max.Y);
         }
 
         public override string ToString()

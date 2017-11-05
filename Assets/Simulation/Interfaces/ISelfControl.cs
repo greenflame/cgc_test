@@ -11,8 +11,8 @@
         void StepLeft();
         void StepRight();
 
-        void Turn(float angle);
-        void TurnTo(float x, float y);
+        void Turn(double angle);
+        void TurnTo(double x, double y);
         void TurnTo(IUnit obj);
     }
 }

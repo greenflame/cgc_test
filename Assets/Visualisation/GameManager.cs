@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Simulation.Implementation;
@@ -26,9 +27,9 @@ namespace Visualisation
         private List<GameObject> _units;
         private List<GameObject> _shells;
 
-        private float W = 10;
-        private float H = 7.5f;
-        private float Scale = 1;
+        private double W = 10;
+        private double H = 7.5f;
+        private double Scale = 1;
 
         [UsedImplicitly]
         private void Start()
@@ -83,14 +84,14 @@ namespace Visualisation
                 .GetComponent<SizeService>();
 
             // Pos
-            float x = W / sizeService.Size.X * source.GetComponent<Transform>().Position.X;
-            float y = -1 * H / sizeService.Size.Y * source.GetComponent<Transform>().Position.Y;
+            double x = W / sizeService.Size.X * source.GetComponent<Transform>().Position.X;
+            double y = -1 * H / sizeService.Size.Y * source.GetComponent<Transform>().Position.Y;
 
-            dest.transform.position = new Vector3(x, y, 0);
+            dest.transform.position = new Vector3((float) x, (float) y, 0);
 
             // Rot
-            float angle = source.GetComponent<Transform>().Angle * -1 * Mathf.Rad2Deg;
-            dest.transform.rotation = Quaternion.Euler(0, 0, angle);
+            double angle = source.GetComponent<Transform>().Angle * -1 * Mathf.Rad2Deg;
+            dest.transform.rotation = Quaternion.Euler(0, 0, (float) angle);
         }
 
         private static void Test()
@@ -116,14 +117,14 @@ namespace Visualisation
             var d2 = Vector2.FromAngle(Mathf.PI * 3 / 2);
             Assert.AreEqual(d, d2);
 
-            Assert.AreEqual(r.AngleTo(u), Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
-            Assert.AreEqual(u.AngleTo(l), Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
-            Assert.AreEqual(l.AngleTo(d), Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
-            Assert.AreEqual(d.AngleTo(r), Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
+            Assert.AreEqual((float)r.AngleTo(u), Mathf.PI / 2, "", new FloatComparer((float) Tools.Epsilon));
+            Assert.AreEqual((float)u.AngleTo(l), Mathf.PI / 2, "", new FloatComparer((float) Tools.Epsilon));
+            Assert.AreEqual((float)l.AngleTo(d), Mathf.PI / 2, "", new FloatComparer((float) Tools.Epsilon));
+            Assert.AreEqual((float)d.AngleTo(r), Mathf.PI / 2, "", new FloatComparer((float) Tools.Epsilon));
 
-            Assert.AreEqual(l.AngleTo(u), -Mathf.PI / 2, "", new FloatComparer(Tools.Epsilon));
+            Assert.AreEqual((float)l.AngleTo(u), -Mathf.PI / 2, "", new FloatComparer((float) Tools.Epsilon));
 
-            Assert.AreEqual(l.AngleTo(r), Mathf.PI, "", new FloatComparer(Tools.Epsilon));
+            Assert.AreEqual((float)l.AngleTo(r), Mathf.PI, "", new FloatComparer((float) Tools.Epsilon));
 
             Debug.Log("Tests completed");
         }
