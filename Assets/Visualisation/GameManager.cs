@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Simulation.Implementation;
@@ -29,7 +28,7 @@ namespace Visualisation
 
         private double W = 10;
         private double H = 7.5f;
-        private double Scale = 1;
+        private double Scale = 0.02f;
 
         [UsedImplicitly]
         private void Start()
@@ -60,6 +59,16 @@ namespace Visualisation
 
         private void Draw()
         {
+            // Clear positions
+            _units.Concat(_shells)
+                .Select(o => o.GetComponent<UnityEngine.Transform>())
+                .ToList()
+                .ForEach(t =>
+                {
+                    t.localPosition = new Vector3(-3, -3, 0);
+                });
+
+            // Place units
             var units = _world.GetObjects<MonsterBehaviour>().ToList();
 
             for (var i = 0; i < units.Count; i++)
@@ -68,6 +77,7 @@ namespace Visualisation
                 _units[i].GetComponent<Renderer>().material.color = Color.yellow;
             }
 
+            // Place shells
             var shells = _world.GetObjects<ShellBehaviour>().ToList();
 
             for (var i = 0; i < shells.Count; i++)
@@ -77,21 +87,25 @@ namespace Visualisation
             }
         }
 
-        void MapTransform(Simulation.Implementation.GameObject source, GameObject dest)
+        private void MapTransform(Simulation.Implementation.GameObject source, GameObject dest)
         {
             SizeService sizeService = source.World
                 .GetObject<SizeService>()
                 .GetComponent<SizeService>();
 
             // Pos
-            double x = W / sizeService.Size.X * source.GetComponent<Transform>().Position.X;
-            double y = -1 * H / sizeService.Size.Y * source.GetComponent<Transform>().Position.Y;
+            float x = (float) (W / sizeService.Size.X * source.GetComponent<Transform>().Position.X);
+            float y = (float) (-1 * H / sizeService.Size.Y * source.GetComponent<Transform>().Position.Y);
 
-            dest.transform.position = new Vector3((float) x, (float) y, 0);
+            dest.transform.position = new Vector3(x, y, 0);
 
             // Rot
-            double angle = source.GetComponent<Transform>().Angle * -1 * Mathf.Rad2Deg;
-            dest.transform.rotation = Quaternion.Euler(0, 0, (float) angle);
+            float angle = (float) (source.GetComponent<Transform>().Angle * -1 * Mathf.Rad2Deg);
+            dest.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            // Scale
+            float scale = (float) (Scale * source.GetComponent<Transform>().Radius);
+            dest.transform.localScale = new Vector3(scale, scale, scale);
         }
 
         private static void Test()

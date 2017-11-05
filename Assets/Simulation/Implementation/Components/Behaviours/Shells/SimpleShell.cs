@@ -17,8 +17,6 @@ namespace Simulation.Implementation.Components.Behaviours.Shells
             PhysicService = GameObject.World
                 .GetObject<PhysicService>()
                 .GetComponent<PhysicService>();
-
-            base.Initialize();
         }
 
         public override void DoStep()

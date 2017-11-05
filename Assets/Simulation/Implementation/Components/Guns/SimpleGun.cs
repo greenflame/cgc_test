@@ -44,7 +44,7 @@ namespace Simulation.Implementation.Components.Guns
             var shell = Factory.MakeSimpleShell(GameObject.World);
 
             double dist = Transform.Radius + shell.GetComponent<Transform>().Radius + 5;
-            shell.GetComponent<Transform>().Position = Transform.Forward * dist;
+            shell.GetComponent<Transform>().Position = Transform.Position + Transform.Forward * dist;
 
             shell.GetComponent<Transform>().Angle = Transform.Angle;
 

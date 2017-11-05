@@ -41,27 +41,12 @@ namespace Simulation.Implementation
             DestroyRequests.Add(o);
         }
 
-        public void InitializeNewComponents()
-        {
-            GameObjects.ForEach(o =>
-            {
-                o.Components
-                    .Where(c => !c.IsInitialized)
-                    .ToList()
-                    .ForEach(c =>
-                    {
-                        c.InitializeExternal(o);
-                        c.IsInitialized = true;
-                    });
-            });
-        }
-
-        private void ProcessDestroyRequests()
+        private void ProcessObjectDestroyRequests()
         {
             GameObjects = GameObjects.Where(o => !DestroyRequests.Contains(o)).ToList();
         }
 
-        private void ProcessCreateRequests()
+        private void ProcessObjectCreateRequests()
         {
             GameObjects.AddRange(CreateRequests);
             CreateRequests.Clear();
@@ -69,15 +54,14 @@ namespace Simulation.Implementation
 
         public void DoStep()
         {
-            ProcessDestroyRequests();
+            ProcessObjectDestroyRequests();
+            ProcessObjectCreateRequests();
 
-            ProcessCreateRequests();
+            GameObjects.ForEach(o => o.ProcessComponentDestroyRequests());
+            GameObjects.ForEach(o => o.ProcessComponentCreateRequests());
 
-            InitializeNewComponents();
-
-            GameObjects.SelectMany(o => o.Components)
-                .ToList()
-                .ForEach(c => c.DoStep());
+            GameObjects.ForEach(o => o.InitializeNewComponents());
+            GameObjects.ForEach(o => o.DoStep());
 
             Tick++;
         }

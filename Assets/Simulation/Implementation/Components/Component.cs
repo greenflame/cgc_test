@@ -11,7 +11,7 @@
             IsInitialized = false;
         }
 
-        public void InitializeExternal(GameObject gameObject)
+        public void InitializeInternal(GameObject gameObject)
         {
             GameObject = gameObject;
 

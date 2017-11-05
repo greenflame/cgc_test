@@ -1,5 +1,4 @@
-﻿using System;
-using Simulation.Implementation.Geometry;
+﻿using Simulation.Implementation.Geometry;
 
 namespace Simulation.Implementation.Components
 {

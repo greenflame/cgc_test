@@ -1,6 +1,4 @@
-﻿using Simulation.Implementation.Geometry;
-
-namespace Simulation.Implementation.Components.Services
+﻿namespace Simulation.Implementation.Components.Services
 {
     public class PhysicService : Service
     {

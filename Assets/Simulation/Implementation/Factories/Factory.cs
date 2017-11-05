@@ -1,12 +1,9 @@
-﻿using NUnit.Framework.Interfaces;
-using Simulation.Implementation.Components;
-using Simulation.Implementation.Components.Behaviours;
+﻿using Simulation.Implementation.Components;
 using Simulation.Implementation.Components.Behaviours.Monsters;
 using Simulation.Implementation.Components.Behaviours.Shells;
 using Simulation.Implementation.Components.Guns;
 using Simulation.Implementation.Components.Services;
 using Simulation.Implementation.Geometry;
-using UnityEngine.Networking;
 
 namespace Simulation.Implementation.Factories
 {
