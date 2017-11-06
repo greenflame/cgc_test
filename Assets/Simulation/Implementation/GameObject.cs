@@ -12,9 +12,7 @@ namespace Simulation.Implementation
         public string Name { get; set; }
 
         public List<Component> Components { get; set; }
-
-        public List<Component> CreateRequests { get; set; }
-        public List<Component> DestroyRequests { get; set; }
+        public List<Component> CapturedComponents { get; set; }
 
         public GameObject(World world, string name)
         {
@@ -22,35 +20,27 @@ namespace Simulation.Implementation
             Name = name;
 
             Components = new List<Component>();
-
-            CreateRequests = new List<Component>();
-            DestroyRequests = new List<Component>();
+            CapturedComponents = new List<Component>();
         }
 
         public void CreateComponent(Component o)
         {
-            CreateRequests.Add(o);
+            Components.Add(o);
         }
 
         public void DestroyComponent(Component o)
         {
-            DestroyRequests.Add(o);
+            Components.Remove(o);
         }
 
-        public void ProcessComponentDestroyRequests()
+        public void CaptureComponents()
         {
-            Components = Components.Where(c => !DestroyRequests.Contains(c)).ToList();
-        }
-
-        public void ProcessComponentCreateRequests()
-        {
-            Components.AddRange(CreateRequests);
-            CreateRequests.Clear();
+            CapturedComponents = Components.ToList();
         }
 
         public void InitializeNewComponents()
         {
-            Components.Where(c => !c.IsInitialized)
+            CapturedComponents.Where(c => !c.IsInitialized)
                 .ToList()
                 .ForEach(c =>
                 {
@@ -61,7 +51,7 @@ namespace Simulation.Implementation
 
         public void DoStep()
         {
-            Components.ForEach(c => c.DoStep());
+            CapturedComponents.ForEach(c => c.DoStep());
         }
 
         public T GetComponentSafe<T>()

@@ -13,69 +13,73 @@ namespace Simulation.Implementation.Factories
         {
             GameObject gameObject = new GameObject(world, "ServiceObject");
 
-            gameObject.Components.Add(new SizeService
+            gameObject.CreateComponent(new SizeService
             {
                 Size = new Vector2(1000, 750)
             });
 
-            gameObject.Components.Add(new DeadCollector());
+            gameObject.CreateComponent(new DeadCollector());
 
-            gameObject.Components.Add(new PhysicService());
+            gameObject.CreateComponent(new PhysicService());
+
+            gameObject.CreateComponent(new TimeService());
             
             return gameObject;
         }
 
-        public static GameObject MakeQuickMonster(World world)
+        public static GameObject MakeQuickMonster(World world, Vector2 pos, double angle = 0)
         {
             GameObject gameObject = new GameObject(world, "QuickMonster");
 
-            gameObject.Components.Add(new Transform
+            gameObject.CreateComponent(new Transform
             {
-                Position = new Vector2(0, 0),
+                Position = pos,
+                Angle = angle,
                 Radius = 30
             });
 
-            gameObject.Components.Add(new MotionController
+            gameObject.CreateComponent(new MotionController
             {
                 RotationSpeed = 0.1f,
                 StraightSpeed = 1,
                 SideSpeed = 3
             });
 
-            gameObject.Components.Add(new Health
+            gameObject.CreateComponent(new Health
             {
                 Max = 30,
                 Current = 30
             });
 
-            gameObject.Components.Add(new SimpleGun
+            gameObject.CreateComponent(new SimpleGun
             {
                 Cooldown = 10
             });
 
-            gameObject.Components.Add(new QuickMonster());
+            gameObject.CreateComponent(new QuickMonster());
 
             return gameObject;
         }
 
-        public static GameObject MakeSimpleShell(World world)
+        public static GameObject MakeSimpleShell(World world, Vector2 pos, double angle = 0)
         {
             GameObject gameObject = new GameObject(world, "SimpleBullet");
 
-            gameObject.Components.Add(new Transform
+            gameObject.CreateComponent(new Transform
             {
-                Position = new Vector2(0, 0),
+                Position = pos,
+                Angle = angle,
                 Radius = 5
             });
 
-            gameObject.Components.Add(new MotionController
+            gameObject.CreateComponent(new MotionController
             {
                 RotationSpeed = 0,
                 StraightSpeed = 10,
                 SideSpeed = 0
             });
 
-            gameObject.Components.Add(new SimpleShell
+            gameObject.CreateComponent(new SimpleShell
             {
                 Damage = 10
             });

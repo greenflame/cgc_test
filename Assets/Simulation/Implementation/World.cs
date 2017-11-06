@@ -3,67 +3,51 @@ using System.Linq;
 using Simulation.Implementation.Components;
 using Simulation.Implementation.Exceptions;
 using Simulation.Implementation.Factories;
-using Simulation.Implementation.Geometry;
-using Simulation.Interfaces;
-using Simulation.Interfaces.Enums;
-using Simulation.Strategies;
 
 namespace Simulation.Implementation
 {
     public class World
     {
         public List<GameObject> GameObjects { get; set; }
-
-        public List<GameObject> CreateRequests { get; set; }
-        public List<GameObject> DestroyRequests { get; set; }
-
-        public int Tick { get; private set; }
+        public List<GameObject> CapturedGameObjects { get; set; }
 
         public World()
         {
             GameObjects = new List<GameObject>();
 
-            CreateRequests = new List<GameObject>();
-            DestroyRequests = new List<GameObject>();
-
-            Tick = 0;
-
-            GameObjects.Add(Factory.MakeServiceObject(this));
+            CreateObject(Factory.MakeServiceObject(this));
         }
 
         public void CreateObject(GameObject o)
         {
-            CreateRequests.Add(o);
+            GameObjects.Add(o);
         }
 
         public void DestroyObject(GameObject o)
         {
-            DestroyRequests.Add(o);
+            GameObjects.Remove(o);
         }
 
-        private void ProcessObjectDestroyRequests()
+        private void CaptureGameObjects()
         {
-            GameObjects = GameObjects.Where(o => !DestroyRequests.Contains(o)).ToList();
-        }
-
-        private void ProcessObjectCreateRequests()
-        {
-            GameObjects.AddRange(CreateRequests);
-            CreateRequests.Clear();
+            CapturedGameObjects = GameObjects.ToList();
         }
 
         public void DoStep()
         {
-            ProcessObjectDestroyRequests();
-            ProcessObjectCreateRequests();
+            CaptureGameObjects();
 
-            GameObjects.ForEach(o => o.ProcessComponentDestroyRequests());
-            GameObjects.ForEach(o => o.ProcessComponentCreateRequests());
+            CapturedGameObjects.ForEach(o => o.CaptureComponents());
 
-            GameObjects.ForEach(o => o.InitializeNewComponents());
-            GameObjects.ForEach(o => o.DoStep());
+            CapturedGameObjects.ForEach(o => o.InitializeNewComponents());
 
-            Tick++;
+            CapturedGameObjects.Where(o => !o.Name.StartsWith("Service"))
+                .ToList()
+                .ForEach(o => o.DoStep());
+
+            CapturedGameObjects.Where(o => o.Name.StartsWith("Service"))
+                .ToList()
+                .ForEach(o => o.DoStep());
         }
 
         public GameObject GetObjectSafe<T>() where T : Component

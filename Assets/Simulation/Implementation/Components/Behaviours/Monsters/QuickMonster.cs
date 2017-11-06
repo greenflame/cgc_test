@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Simulation.Implementation.Components.Guns;
 using Simulation.Implementation.Components.Services;
 using Simulation.Implementation.Geometry;
@@ -35,23 +36,58 @@ namespace Simulation.Implementation.Components.Behaviours.Monsters
                 .GetComponent<SizeService>();
 
             GenerateNewDestination();
+            State = StateType.Walking;
         }
 
         public override void DoStep()
         {
-            if (Transform.DistanceTo(CurrentDestination) < 100)
+            switch (State)
             {
-                GenerateNewDestination();
-                SimpleGun.Shoot();
-            }
+                case StateType.Walking:
+                    if (Transform.DistanceTo(CurrentDestination) > 100)
+                    {
+                        MotionController.RotateTo(CurrentDestination);
+                        MotionController.StepForward();
+                    }
+                    else
+                    {
+                        GenerateNewTarget();
+                        State = StateType.Shooting;
+                    }
+                    break;
+                case StateType.Shooting:
+                    if (CurrentTarget == null)
+                    {
+                        GenerateNewDestination();
+                        State = StateType.Walking;
+                    }
 
-            MotionController.RotateTo(CurrentDestination);
-            MotionController.StepForward();
+                    if (!Tools.Eq(0, Transform.AngleTo(CurrentTarget.GetComponent<Transform>().Position)))
+                    {
+                        MotionController.RotateTo(CurrentTarget.GetComponent<Transform>().Position);
+                    }
+                    else
+                    {
+                        SimpleGun.Shoot();
+
+                        GenerateNewDestination();
+                        State = StateType.Walking;
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void GenerateNewDestination()
         {
             CurrentDestination = Vector2.Random(new Random(), SizeService.Size);
+        }
+
+        private void GenerateNewTarget()
+        {
+            CurrentTarget = GameObject.World.GameObjects
+                .FirstOrDefault(o => o.HasComponent<MonsterBehaviour>() && o != GameObject);
         }
     }
 }

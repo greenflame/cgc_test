@@ -35,7 +35,11 @@ namespace Visualisation
         {
             _world = new World();
 
-            _world.GameObjects.Add(Factory.MakeQuickMonster(_world));
+            for (int i = 0; i < 10; i++)
+            {
+                var monster = Factory.MakeQuickMonster(_world, new Vector2(50 + 100 * i, 50));
+                _world.CreateObject(monster);
+            }
 
             _units = new List<GameObject>();
             _shells = new List<GameObject>();

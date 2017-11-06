@@ -1,5 +1,6 @@
 ﻿using System;
 using Simulation.Implementation.Factories;
+using Simulation.Implementation.Geometry;
 
 namespace Simulation.Implementation.Components.Guns
 {
@@ -41,12 +42,10 @@ namespace Simulation.Implementation.Components.Guns
 
         private void InstantiateShell()
         {
-            var shell = Factory.MakeSimpleShell(GameObject.World);
+            var shell = Factory.MakeSimpleShell(GameObject.World, Transform.Position, Transform.Angle);
 
             double dist = Transform.Radius + shell.GetComponent<Transform>().Radius + 5;
-            shell.GetComponent<Transform>().Position = Transform.Position + Transform.Forward * dist;
-
-            shell.GetComponent<Transform>().Angle = Transform.Angle;
+            shell.GetComponent<Transform>().Translate(Transform.Forward * dist);
 
             GameObject.World.CreateObject(shell);
         }

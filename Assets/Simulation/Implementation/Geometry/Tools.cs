@@ -32,5 +32,30 @@ namespace Simulation.Implementation.Geometry
 
             return val;
         }
+
+        public static bool Eq(double d1, double d2)
+        {
+            return Math.Abs(d1 - d2) < Epsilon;
+        }
+
+        public static bool Gt(double d1, double d2)
+        {
+            return d1 > d2 && !Eq(d1, d2);
+        }
+
+        public static bool Lt(double d1, double d2)
+        {
+            return d1 < d2 && !Eq(d1, d2);
+        }
+
+        public static bool Ge(double d1, double d2)
+        {
+            return d1 > d2 || Eq(d1, d2);
+        }
+
+        public static bool Le(double d1, double d2)
+        {
+            return d1 < d2 || Eq(d1, d2);
+        }
     }
 }
