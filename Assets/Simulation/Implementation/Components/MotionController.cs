@@ -13,6 +13,8 @@ namespace Simulation.Implementation.Components
 
         public override void Initialize()
         {
+            GameObject.RequireComponent<Transform>();
+
             Transform = GameObject.GetComponent<Transform>();
         }
 

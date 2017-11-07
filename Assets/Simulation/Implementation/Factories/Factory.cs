@@ -1,5 +1,6 @@
 ﻿using Simulation.Implementation.Components;
 using Simulation.Implementation.Components.Behaviours.Monsters;
+using Simulation.Implementation.Components.Behaviours.Players;
 using Simulation.Implementation.Components.Behaviours.Shells;
 using Simulation.Implementation.Components.Guns;
 using Simulation.Implementation.Components.Services;
@@ -20,7 +21,10 @@ namespace Simulation.Implementation.Factories
 
             gameObject.CreateComponent(new DeadCollector());
 
-            gameObject.CreateComponent(new PhysicService());
+            gameObject.CreateComponent(new PhysicService
+            {
+                Iterations = 10
+            });
 
             gameObject.CreateComponent(new TimeService());
             
@@ -56,6 +60,11 @@ namespace Simulation.Implementation.Factories
                 Cooldown = 10
             });
 
+            gameObject.CreateComponent(new Collider
+            {
+                Mass = 10
+            });
+
             gameObject.CreateComponent(new QuickMonster());
 
             return gameObject;
@@ -83,6 +92,46 @@ namespace Simulation.Implementation.Factories
             {
                 Damage = 10
             });
+
+            return gameObject;
+        }
+
+        public static GameObject MakePlayer(World world, Vector2 pos, double angle, PlayerBehaviour behaviour)
+        {
+            var name = string.Format("{0} Player", behaviour.Type);
+
+            GameObject gameObject = new GameObject(world, name);
+
+            gameObject.CreateComponent(new Transform
+            {
+                Position = pos,
+                Angle = angle,
+                Radius = 30
+            });
+
+            gameObject.CreateComponent(new MotionController
+            {
+                RotationSpeed = 0.1f,
+                StraightSpeed = 1,
+                SideSpeed = 3
+            });
+
+            gameObject.CreateComponent(new Health
+            {
+                Max = 30,
+                Current = 30
+            });
+
+            gameObject.CreateComponent(new SimpleGun
+            {
+                Cooldown = 10
+            });
+
+            gameObject.CreateComponent(new Collider
+            {
+                Mass = 20
+            });
+            gameObject.CreateComponent(behaviour);
 
             return gameObject;
         }

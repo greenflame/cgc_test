@@ -80,5 +80,10 @@ namespace Simulation.Implementation
         {
             return Components.OfType<T>().Any();
         }
+
+        public void RequireComponent<T>()
+        {
+            GetComponent<T>();
+        }
     }
 }

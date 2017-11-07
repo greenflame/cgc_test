@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
+using Simulation.Implementation.Components.Behaviours.Monsters;
 using Simulation.Implementation.Components.Guns;
 using Simulation.Implementation.Components.Services;
 using Simulation.Implementation.Geometry;
 
-namespace Simulation.Implementation.Components.Behaviours.Monsters
+namespace Simulation.Implementation.Components.Behaviours.Players
 {
-    public class QuickMonster : MonsterBehaviour
+    public class SimplePlayer : PlayerBehaviour
     {
         private enum StateType
         {
@@ -17,7 +18,7 @@ namespace Simulation.Implementation.Components.Behaviours.Monsters
         private StateType State { get; set; }
         private Vector2 CurrentDestination { get; set; }
         private GameObject CurrentTarget { get; set; }
-        
+
         // Components
         private Transform Transform { get; set; }
         private MotionController MotionController { get; set; }

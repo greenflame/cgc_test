@@ -11,6 +11,9 @@ namespace Simulation.Implementation.Components.Behaviours.Shells
 
         public override void Initialize()
         {
+            GameObject.RequireComponent<Transform>();
+            GameObject.RequireComponent<MotionController>();
+
             Transform = GameObject.GetComponent<Transform>();
             MotionController = GameObject.GetComponent<MotionController>();
 

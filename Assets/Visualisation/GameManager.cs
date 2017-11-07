@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Simulation.Implementation;
 using Simulation.Implementation.Components.Behaviours.Monsters;
+using Simulation.Implementation.Components.Behaviours.Players;
 using Simulation.Implementation.Components.Behaviours.Shells;
 using Simulation.Implementation.Components.Services;
 using Simulation.Implementation.Factories;
@@ -25,6 +27,7 @@ namespace Visualisation
 
         private List<GameObject> _units;
         private List<GameObject> _shells;
+        private List<GameObject> _players;
 
         private double W = 10;
         private double H = 7.5f;
@@ -33,23 +36,46 @@ namespace Visualisation
         [UsedImplicitly]
         private void Start()
         {
+            // Configure model
             _world = new World();
 
             for (int i = 0; i < 10; i++)
             {
-                var monster = Factory.MakeQuickMonster(_world, new Vector2(50 + 100 * i, 50));
+                var monster = Factory.MakeQuickMonster(_world, new Vector2(50 + 100 * i, 375));
                 _world.CreateObject(monster);
             }
 
+            _world.CreateObject(Factory.MakePlayer(_world, new Vector2(100, 100), Math.PI / 4, new SimplePlayer
+            {
+                Type = PlayerBehaviour.PlayerType.Red
+            }));
+
+            _world.CreateObject(Factory.MakePlayer(_world, new Vector2(900, 100), Math.PI / 4, new SimplePlayer
+            {
+                Type = PlayerBehaviour.PlayerType.Green
+            }));
+
+            _world.CreateObject(Factory.MakePlayer(_world, new Vector2(100, 650), Math.PI / 4, new SimplePlayer
+            {
+                Type = PlayerBehaviour.PlayerType.Blue
+            }));
+
+            _world.CreateObject(Factory.MakePlayer(_world, new Vector2(900, 650), Math.PI / 4, new SimplePlayer
+            {
+                Type = PlayerBehaviour.PlayerType.Yellow
+            }));
+
+            // Configure view
             _units = new List<GameObject>();
             _shells = new List<GameObject>();
+            _players = new List<GameObject>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 50; i++)
             {
                 _units.Add(Instantiate(Unit, Vector3.right * i, Quaternion.identity));
                 _shells.Add(Instantiate(Shell, Vector3.right * i, Quaternion.identity));
+                _players.Add(Instantiate(Unit, Vector3.right * i, Quaternion.identity));
             }
-
 
             Test();
         }
@@ -64,7 +90,7 @@ namespace Visualisation
         private void Draw()
         {
             // Clear positions
-            _units.Concat(_shells)
+            _units.Concat(_shells).Concat(_players)
                 .Select(o => o.GetComponent<UnityEngine.Transform>())
                 .ToList()
                 .ForEach(t =>
@@ -88,6 +114,15 @@ namespace Visualisation
             {
                 MapTransform(shells[i], _shells[i]);
                 _shells[i].GetComponent<Renderer>().material.color = Color.yellow;
+            }
+
+            // Place players
+            var players = _world.GetObjects<PlayerBehaviour>().ToList();
+
+            for (var i = 0; i < players.Count; i++)
+            {
+                MapTransform(players[i], _players[i]);
+                _players[i].GetComponent<Renderer>().material.color = Color.black;
             }
         }
 

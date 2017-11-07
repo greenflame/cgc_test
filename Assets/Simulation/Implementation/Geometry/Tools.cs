@@ -6,6 +6,7 @@ namespace Simulation.Implementation.Geometry
     {
         public static double Epsilon { get { return 1e-5f; } }
 
+        // todo delete
         public static double HalfPi { get { return Math.PI / 2; } }
 
         public static double TwoPi { get { return Math.PI * 2; } }
